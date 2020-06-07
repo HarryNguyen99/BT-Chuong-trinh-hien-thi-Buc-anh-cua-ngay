@@ -2,16 +2,17 @@ package controller;
 
 import model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import service.ReviewService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -31,20 +32,34 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-    @GetMapping("create")
-    public ModelAndView showForm(){
-        ModelAndView modelAndView =new  ModelAndView("home");
-       modelAndView.addObject("review", new Review());
-        return  modelAndView;
+    @GetMapping()
+//    public ModelAndView showHome() {
+//        return showList(new PageRequest(0,1));
+//    }
+
+
+    public ModelAndView showList(Pageable pageable) {
+        Page<Review> reviews =reviewService.findAll(pageable);
+        ModelAndView modelAndView = new ModelAndView("home");
+        modelAndView.addObject("reviews", reviews);
+        modelAndView.addObject("review", new Review());
+        return modelAndView;
     }
 
     @PostMapping("create")
-    public ModelAndView saveDanhGia(@ModelAttribute("review") Review review){
+    public ModelAndView saveReview(@ModelAttribute("review") Review review){
         reviewService.save(review);
         ModelAndView modelAndView = new ModelAndView("home");
         modelAndView.addObject("review", new Review());
         return modelAndView;
     }
 
+    @PostMapping("like")
+    public ModelAndView saveLike(@ModelAttribute("review") Review review){
+        reviewService.save(review);
+        ModelAndView modelAndView = new ModelAndView("home");
+        modelAndView.addObject("review", new Review());
+        return modelAndView;
+    }
 
 }

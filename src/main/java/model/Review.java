@@ -3,36 +3,36 @@ package model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "reviews")
+@Table
 public class Review {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+
     private Long point;
-    @Column
+
     private String author;
-    @Column
+
     private String content;
-    @Column
-    private Long like;
+
+    private Long likes;
 
     public Review() {
     }
 
-    public Review(Long point, String author, String content, Long like) {
+    public Review(Long point, String author, String content, Long likes) {
         this.point = point;
         this.author = author;
         this.content = content;
-        this.like = like;
+        this.likes = likes;
     }
 
-    public Long getLike() {
-        return like;
+    public Long getLikes() {
+        return likes;
     }
 
-    public void setLike(Long like) {
-        this.like = like;
+    public void setLikes(Long like) {
+        this.likes = like;
     }
 
     public Long getId() {

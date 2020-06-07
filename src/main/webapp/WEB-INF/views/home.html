@@ -8,20 +8,52 @@
 <img id="img-of-the-day"><br>
 <form th:action="@{create}" th:object="${review}" method="post">
 <select>
-    <option th:each="listDiem: ${listDiem}"th:value="${listDiem}"
-            th:text="${listDiem}" th:field="${point}" ></option>
+<!--    <option th:field="*{point}" th:value="1">1</option>-->
+<!--    <option th:field="*{point}" th:value="2">2</option>-->
+<!--    <option th:field="*{point}" th:value="3">3</option>-->
+<!--    <option th:field="*{point}" th:value="4">4</option>-->
+<!--    <option th:field="*{point}" th:value="5">5</option>-->
+    <option th:each="listDiem: ${listDiem}" th:value="${listDiem}"
+            th:text="${listDiem}" th:field="*{point}" ></option>
 </select >
 <h3>Author:</h3>
-<input type="text" th:field="${author}">
+<input type="text" th:field="*{author}">
 <h3>Feedback:</h3>
-<textarea th:field="${content}"></textarea>
+<textarea th:field="*{content}"></textarea>
 <input type="submit">
 </form>
 
 <p>Điểm bài đánh giá:</p>
-<p th:text="${danhgia.content}"></p>
-<p th:text="${danhgia.like}"></p>
-<input type="button" value="Like" th:field="${like}">
+
+<th:block th:each="review : ${reviews}">
+
+    <p th:text="${review.content}"></p>
+    <p th:text="${review.likes}"></p>
+    <form th:action="@{likes}" th:object="${review}" method="post">
+        <input type="button" value="Like" th:field="*{likes}">
+    </form>
+</th:block>
+
+<!--<th:block th:each="review : ${reviews}">-->
+<!--    <form th:action="@{/create}" method="post">-->
+<!--        <input type="text" th:field="*{}">-->
+<!--    </form>-->
+<!--</th:block>-->
+
+
+<!--<th:block th:each="review : ${reviews}">-->
+<!--    <p th:text="${review.content}"></p>-->
+<!--    <p th:text="${review.likes}"></p>-->
+<!--</th:block>-->
+
+<!--<form th:action="@{/create}" method="POST" th:object="${review}">-->
+<!--    <label for="author">Author</label>-->
+<!--    <input type="text" th:field="*{author}" id="author">-->
+<!--    <label for="content">Content</label>-->
+<!--    <textarea th:field="*{content}" id="content" cols="30" rows="10"></textarea>-->
+<!--    <input type="submit" value="Submit">-->
+<!--</form>-->
+
 <script>
     let query = 'https://api.nasa.gov/planetary/apod?api_key=AokE1OMeeiud7lvP5elrR9ZSg11qhHWehS7cjzWx';
     let request = new XMLHttpRequest();

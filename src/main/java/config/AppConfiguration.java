@@ -1,9 +1,10 @@
 package config;
 
 
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.format.FormatterRegistry;
 import repository.ReviewRepository;
-
-import repository.impl.ReviewRepositoryimpl;
 
 import service.ReviewService;
 
@@ -35,10 +36,13 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan("controller")
+@EnableJpaRepositories("repository")
+@EnableSpringDataWebSupport
 public class AppConfiguration extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -48,13 +52,10 @@ public class AppConfiguration extends WebMvcConfigurerAdapter implements Applica
         this.applicationContext = applicationContext;
     }
 
-    @Bean
-    public ReviewRepository customerRepository() {
-        return new ReviewRepositoryimpl();
-    }
+
 
     @Bean
-    public ReviewService customerService() {
+    public ReviewService reviewService() {
         return new ReviewServiecimpl();
     }
 
@@ -67,6 +68,7 @@ public class AppConfiguration extends WebMvcConfigurerAdapter implements Applica
         templateResolver.setPrefix("/WEB-INF/views/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
     }
 
@@ -81,6 +83,7 @@ public class AppConfiguration extends WebMvcConfigurerAdapter implements Applica
     public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
+        viewResolver.setCharacterEncoding("UTF-8");
         return viewResolver;
     }
 
@@ -106,7 +109,7 @@ public class AppConfiguration extends WebMvcConfigurerAdapter implements Applica
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/review");
         dataSource.setUsername("root");
         dataSource.setPassword("12345678");

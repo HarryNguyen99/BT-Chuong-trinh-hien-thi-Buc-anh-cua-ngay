@@ -2,24 +2,35 @@ package service.impl;
 
 import model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import repository.ReviewRepository;
 import service.ReviewService;
 
-import java.util.List;
 
+
+@Transactional
 public class ReviewServiecimpl implements ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
 
+
+
     @Override
-    public List<Review> findAll() {
-        return reviewRepository.findAll();
+    public Page<Review> findAll(Pageable pageable) {
+        return reviewRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Review> findAllByContentContaining(String content, Pageable pageable) {
+        return reviewRepository.findAllByContentContaining(content, pageable);
     }
 
     @Override
     public Review findById(Long id) {
-        return reviewRepository.findById(id);
+        return reviewRepository.findOne(id);
     }
 
     @Override
@@ -29,6 +40,6 @@ public class ReviewServiecimpl implements ReviewService {
 
     @Override
     public void remove(Long id) {
-        reviewRepository.remove(id);
+        reviewRepository.delete(id);
     }
 }
